@@ -15,6 +15,8 @@ pub trait ScalarNumber {
     fn mul(self, o: Self) -> Self;
 
     fn inv(self) -> Self;
+
+    fn neg(self) -> Self;
 }
 
 pub struct Scalar<S: ScalarNumber> {

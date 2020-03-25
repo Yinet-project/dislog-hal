@@ -17,6 +17,8 @@ pub trait DisLogPoint {
     fn mul(self, o: Self::Scalar) -> Self;
 
     fn inv(self) -> Self;
+
+    fn neg(self) -> Self;
 }
 
 pub struct Point<P: DisLogPoint> {
@@ -32,4 +34,7 @@ impl<P: DisLogPoint<Scalar = S>, S: ScalarNumber<Point = P>> Mul<Scalar<S>> for 
     }
 }
 
+fn dh<SK: ScalarNumber<Point = PK>, PK: DisLogPoint<Scalar = SK>>(sk: Scalar<SK>, pk: Point<PK>) -> Point<PK> {
+    sk * pk
+}
 
