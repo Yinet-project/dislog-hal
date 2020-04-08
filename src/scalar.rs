@@ -6,10 +6,12 @@ use crate::Point;
 pub trait ScalarNumber {
     type Point: DisLogPoint;
 
-    const ZERO: Self;
-    
-    const ONE: Self;
+    fn order() -> Self;
 
+    fn zero() -> Self;
+
+    fn one() -> Self;
+    
     fn add(self, o: Self) -> Self;
 
     fn mul(self, o: Self) -> Self;

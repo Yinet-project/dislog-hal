@@ -6,17 +6,17 @@ use crate::Scalar;
 pub trait DisLogPoint {
     type Scalar: ScalarNumber;
 
-    const ZERO: Self;
-    
-    const ONE: Self;
+    fn order() -> Self::Scalar;
 
-    const GENERATOR: Self;
+    fn zero() -> Self;
+
+    fn one() -> Self;
+
+    fn generator() -> Self;
 
     fn add(self, o: Self) -> Self;
 
     fn mul(self, o: Self::Scalar) -> Self;
-
-    fn inv(self) -> Self;
 
     fn neg(self) -> Self;
 }
