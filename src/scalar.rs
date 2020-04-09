@@ -5,7 +5,7 @@ use crate::DisLogPoint;
 use crate::Point;
 
 /// This trait restrict scalar number's behavier.
-pub trait ScalarNumber: Bytes + Clone + Copy + PartialEq + Default {
+pub trait ScalarNumber: Bytes + Clone + Copy + PartialEq {
     type Point: DisLogPoint;
 
     fn order() -> Self;
