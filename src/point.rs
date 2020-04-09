@@ -4,7 +4,7 @@ use crate::Bytes;
 use crate::Scalar;
 use crate::ScalarNumber;
 
-pub trait DisLogPoint: Bytes {
+pub trait DisLogPoint: Bytes + Clone + Copy + PartialEq {
     type Scalar: ScalarNumber;
 
     fn order() -> Self::Scalar;
@@ -26,6 +26,37 @@ pub trait DisLogPoint: Bytes {
 pub struct Point<P: DisLogPoint> {
     pub(crate) inner: P,
 }
+
+impl<P: DisLogPoint> Clone for Point<P> {
+    fn clone(&self) -> Point<P> {
+        Point {
+            inner: self.inner.clone(),
+        }
+    }
+}
+
+impl<P: DisLogPoint> Copy for Point<P> {}
+
+impl<P: DisLogPoint> core::fmt::Debug for Point<P> {
+    fn fmt(&self, f: &mut ::core::fmt::Formatter) -> ::core::fmt::Result {
+        write!(f, "Point{{\n\tbytes: {:?},\n}}", &self.inner.to_bytes())
+    }
+}
+
+impl<P: DisLogPoint> Default for Point<P> {
+    fn default() -> Point<P> {
+        let inner = P::generator();
+        Point { inner }
+    }
+}
+
+impl<P: DisLogPoint> PartialEq for Point<P> {
+    fn eq(&self, other: &Point<P>) -> bool {
+        self.inner.eq(&other.inner)
+    }
+}
+
+impl<P: DisLogPoint> Eq for Point<P> {}
 
 impl<'a, 'b, P: DisLogPoint<Scalar = S>, S: ScalarNumber<Point = P>> Add<&'b Point<P>>
     for &'a Point<P>
