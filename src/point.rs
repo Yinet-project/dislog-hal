@@ -1,4 +1,4 @@
-use core::ops::{Add, Mul, Neg};
+use core::ops::{Add, Mul, Neg, Sub, AddAssign};
 
 use crate::Bytes;
 use crate::Scalar;
@@ -174,5 +174,20 @@ impl<P: DisLogPoint<Scalar = S>, S: ScalarNumber<Point = P>> Mul<Scalar<S>>
 
     fn mul(self, rhs: Scalar<S>) -> Point<P> {
         &self * &rhs
+    }
+}
+
+impl<'a, 'b, S: DisLogPoint> Sub<&'b Point<S>> for &'a Point<S> {
+    type Output = Point<S>;
+
+    fn sub(self, rhs: &'b Point<S>) -> Point<S> {
+        let inner = self.inner.add(&rhs.inner.neg());
+        Point { inner }
+    }
+}
+
+impl<'b, S: DisLogPoint> AddAssign<&'b Point<S>> for Point<S> {
+    fn add_assign(&mut self, rhs: &'b Self) {
+        self.inner = self.inner.add(&rhs.inner)
     }
 }
