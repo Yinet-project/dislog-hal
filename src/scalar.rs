@@ -28,6 +28,32 @@ pub struct Scalar<S: ScalarNumber> {
     pub(crate) inner: S,
 }
 
+impl<S: ScalarNumber> Scalar<S> {
+    pub fn order() -> Scalar<S> {
+        Scalar {
+            inner: S::order()
+        }
+    }
+
+    pub fn zero() -> Scalar<S> {
+        Scalar {
+            inner: S::zero()
+        }
+    }
+
+    pub fn one() -> Scalar<S> {
+        Scalar {
+            inner: S::one()
+        }
+    }
+
+    pub fn inv(&self) -> Scalar<S> {
+        Scalar {
+            inner: self.inner.inv()
+        }
+    }
+}
+
 impl<S: ScalarNumber> Clone for Scalar<S> {
     fn clone(&self) -> Scalar<S> {
         Scalar {
@@ -64,12 +90,12 @@ impl<'a, S: ScalarNumber> Neg for &'a Scalar<S> {
 
     fn neg(self) -> Scalar<S> {
         Scalar {
-            inner: self.inner.neg()
+            inner: self.inner.neg(),
         }
     }
 }
 
-impl<S: ScalarNumber> Neg for Scalar <S> {
+impl<S: ScalarNumber> Neg for Scalar<S> {
     type Output = Scalar<S>;
 
     fn neg(self) -> Scalar<S> {
@@ -102,6 +128,14 @@ impl<'b, S: ScalarNumber> Add<&'b Scalar<S>> for Scalar<S> {
     }
 }
 
+impl<S: ScalarNumber> Add<Scalar<S>> for Scalar<S> {
+    type Output = Scalar<S>;
+
+    fn add(self, rhs: Scalar<S>) -> Scalar<S> {
+        &self + &rhs
+    }
+}
+
 impl<'a, 'b, S: ScalarNumber> Mul<&'b Scalar<S>> for &'a Scalar<S> {
     type Output = Scalar<S>;
 
@@ -127,6 +161,14 @@ impl<'b, S: ScalarNumber> Mul<&'b Scalar<S>> for Scalar<S> {
     }
 }
 
+impl<S: ScalarNumber> Mul<Scalar<S>> for Scalar<S> {
+    type Output = Scalar<S>;
+
+    fn mul(self, rhs: Scalar<S>) -> Scalar<S> {
+        &self * &rhs
+    }
+}
+
 impl<'a, 'b, S: ScalarNumber<Point = P>, P: DisLogPoint<Scalar = S>> Mul<&'b Point<P>>
     for &'a Scalar<S>
 {
@@ -138,9 +180,7 @@ impl<'a, 'b, S: ScalarNumber<Point = P>, P: DisLogPoint<Scalar = S>> Mul<&'b Poi
     }
 }
 
-impl<'a, S: ScalarNumber<Point = P>, P: DisLogPoint<Scalar = S>> Mul<Point<P>>
-    for &'a Scalar<S>
-{
+impl<'a, S: ScalarNumber<Point = P>, P: DisLogPoint<Scalar = S>> Mul<Point<P>> for &'a Scalar<S> {
     type Output = Point<P>;
 
     fn mul(self, rhs: Point<P>) -> Point<P> {
@@ -148,12 +188,18 @@ impl<'a, S: ScalarNumber<Point = P>, P: DisLogPoint<Scalar = S>> Mul<Point<P>>
     }
 }
 
-impl<'b, S: ScalarNumber<Point = P>, P: DisLogPoint<Scalar = S>> Mul<&'b Point<P>>
-    for Scalar<S>
-{
+impl<'b, S: ScalarNumber<Point = P>, P: DisLogPoint<Scalar = S>> Mul<&'b Point<P>> for Scalar<S> {
     type Output = Point<P>;
 
     fn mul(self, rhs: &'b Point<P>) -> Point<P> {
         &self * rhs
+    }
+}
+
+impl<'b, S: ScalarNumber<Point = P>, P: DisLogPoint<Scalar = S>> Mul<Point<P>> for Scalar<S> {
+    type Output = Point<P>;
+
+    fn mul(self, rhs: Point<P>) -> Point<P> {
+        &self * &rhs
     }
 }
