@@ -1,4 +1,8 @@
 #![no_std]
+#![feature(trace_macros)]
+
+#[macro_use]
+pub(crate) mod macros;
 
 mod scalar;
 
@@ -12,3 +16,4 @@ pub use point::Point;
 
 mod bytes;
 pub use bytes::Bytes;
+

@@ -111,6 +111,17 @@ impl<'a, 'b, S: ScalarNumber> Add<&'b Scalar<S>> for &'a Scalar<S> {
         Scalar { inner }
     }
 }
+trace_macros!(true);
+define_left_value_right_ref!(Scalar,
+                             ScalarNumber,
+                             Scalar,
+                             ScalarNumber,
+                             Add,
+                             add,
+                             &self + rhs,
+                             Scalar<L>);
+trace_macros!(false);
+
 
 impl<'a, S: ScalarNumber> Add<Scalar<S>> for &'a Scalar<S> {
     type Output = Scalar<S>;
@@ -120,13 +131,13 @@ impl<'a, S: ScalarNumber> Add<Scalar<S>> for &'a Scalar<S> {
     }
 }
 
-impl<'b, S: ScalarNumber> Add<&'b Scalar<S>> for Scalar<S> {
-    type Output = Scalar<S>;
-
-    fn add(self, rhs: &'b Scalar<S>) -> Scalar<S> {
-        &self + rhs
-    }
-}
+/* impl<'b, S: ScalarNumber> Add<&'b Scalar<S>> for Scalar<S> { */
+    // type Output = Scalar<S>;
+    //
+    // fn add(self, rhs: &'b Scalar<S>) -> Scalar<S> {
+    //     &self + rhs
+    // }
+/* } */
 
 impl<S: ScalarNumber> Add<Scalar<S>> for Scalar<S> {
     type Output = Scalar<S>;
