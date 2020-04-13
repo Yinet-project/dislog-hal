@@ -24,7 +24,7 @@ pub trait DisLogPoint: Bytes + Clone + Copy + PartialEq {
 
 // #[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
 pub struct Point<P: DisLogPoint> {
-    pub(crate) inner: P,
+    pub inner: P,
 }
 
 impl<P: DisLogPoint> Point<P> {
