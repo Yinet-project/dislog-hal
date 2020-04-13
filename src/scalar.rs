@@ -1,4 +1,4 @@
-use core::ops::{Add, Mul, Neg};
+use core::ops::{Add, Mul, Neg, Sub, AddAssign, MulAssign};
 
 use crate::Bytes;
 use crate::DisLogPoint;
@@ -107,7 +107,7 @@ impl<'a, 'b, S: ScalarNumber> Add<&'b Scalar<S>> for &'a Scalar<S> {
     type Output = Scalar<S>;
 
     fn add(self, rhs: &'b Scalar<S>) -> Scalar<S> {
-        let inner = self.inner.mul(&rhs.inner);
+        let inner = self.inner.add(&rhs.inner);
         Scalar { inner }
     }
 }
@@ -201,5 +201,26 @@ impl<'b, S: ScalarNumber<Point = P>, P: DisLogPoint<Scalar = S>> Mul<Point<P>> f
 
     fn mul(self, rhs: Point<P>) -> Point<P> {
         &self * &rhs
+    }
+}
+
+impl<'a, 'b, S: ScalarNumber> Sub<&'b Scalar<S>> for &'a Scalar<S> {
+    type Output = Scalar<S>;
+
+    fn sub(self, rhs: &'b Scalar<S>) -> Scalar<S> {
+        let inner = self.inner.add(&rhs.inner.neg());
+        Scalar { inner }
+    }
+}
+
+impl<'b, S: ScalarNumber> AddAssign<&'b Scalar<S>> for Scalar<S> {
+    fn add_assign(&mut self, rhs: &'b Self) {
+        self.inner = self.inner.add(&rhs.inner)
+    }
+}
+
+impl<'b, S: ScalarNumber> MulAssign<&'b Scalar<S>> for Scalar<S> {
+    fn mul_assign(&mut self, rhs: &'b Self) {
+        self.inner = self.inner.mul(&rhs.inner)
     }
 }
