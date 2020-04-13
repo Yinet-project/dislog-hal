@@ -25,7 +25,7 @@ pub trait ScalarNumber: Bytes + Clone + Copy + PartialEq {
 
 // #[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
 pub struct Scalar<S: ScalarNumber> {
-    pub(crate) inner: S,
+    pub inner: S,
 }
 
 impl<S: ScalarNumber> Scalar<S> {
