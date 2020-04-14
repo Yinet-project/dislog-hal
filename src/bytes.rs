@@ -1,9 +1,11 @@
 use core::fmt::Debug;
 
-pub trait Bytes {
+pub trait Bytes: Sized {
     type BytesType: Debug;
 
-    fn from_bytes(bytes: Self::BytesType) -> Self;
+    type Error;
+
+    fn from_bytes(bytes: Self::BytesType) -> Result<Self, Self::Error>;
 
     fn to_bytes(&self) -> Self::BytesType;
 }
