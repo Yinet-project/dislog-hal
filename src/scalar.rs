@@ -5,7 +5,7 @@ use crate::DisLogPoint;
 use crate::Point;
 
 /// This trait restrict scalar number's behavier.
-pub trait ScalarNumber: Bytes + Clone + Copy + PartialEq {
+pub trait ScalarNumber: Bytes + Clone + PartialEq {
     type Point: DisLogPoint;
 
     fn order() -> Self;
@@ -61,8 +61,6 @@ impl<S: ScalarNumber> Clone for Scalar<S> {
         }
     }
 }
-
-impl<S: ScalarNumber> Copy for Scalar<S> {}
 
 impl<S: ScalarNumber> core::fmt::Debug for Scalar<S> {
     fn fmt(&self, f: &mut ::core::fmt::Formatter) -> ::core::fmt::Result {

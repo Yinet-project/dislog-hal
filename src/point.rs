@@ -4,7 +4,7 @@ use crate::Bytes;
 use crate::Scalar;
 use crate::ScalarNumber;
 
-pub trait DisLogPoint: Bytes + Clone + Copy + PartialEq {
+pub trait DisLogPoint: Bytes + Clone + PartialEq {
     type Scalar: ScalarNumber;
 
     fn order() -> Self::Scalar;
@@ -60,8 +60,6 @@ impl<P: DisLogPoint> Clone for Point<P> {
         }
     }
 }
-
-impl<P: DisLogPoint> Copy for Point<P> {}
 
 impl<P: DisLogPoint> core::fmt::Debug for Point<P> {
     fn fmt(&self, f: &mut ::core::fmt::Formatter) -> ::core::fmt::Result {
