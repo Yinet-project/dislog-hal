@@ -1,7 +1,8 @@
 use core::fmt::Debug;
+use hex::{FromHex, ToHex};
 
 pub trait Bytes: Sized {
-    type BytesType: Debug;
+    type BytesType: Debug + FromHex + ToHex;
 
     type Error;
 
@@ -9,3 +10,4 @@ pub trait Bytes: Sized {
 
     fn to_bytes(&self) -> Self::BytesType;
 }
+
