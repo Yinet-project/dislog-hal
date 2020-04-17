@@ -10,4 +10,3 @@ pub trait Bytes: Sized {
 
     fn to_bytes(&self) -> Self::BytesType;
 }
-

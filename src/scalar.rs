@@ -1,4 +1,4 @@
-use core::ops::{Add, Mul, Neg, Sub, AddAssign, MulAssign};
+use core::ops::{Add, AddAssign, Mul, MulAssign, Neg, Sub};
 
 use crate::Bytes;
 use crate::DisLogPoint;
@@ -30,26 +30,20 @@ pub struct Scalar<S: ScalarNumber> {
 
 impl<S: ScalarNumber> Scalar<S> {
     pub fn order() -> Scalar<S> {
-        Scalar {
-            inner: S::order()
-        }
+        Scalar { inner: S::order() }
     }
 
     pub fn zero() -> Scalar<S> {
-        Scalar {
-            inner: S::zero()
-        }
+        Scalar { inner: S::zero() }
     }
 
     pub fn one() -> Scalar<S> {
-        Scalar {
-            inner: S::one()
-        }
+        Scalar { inner: S::one() }
     }
 
     pub fn inv(&self) -> Scalar<S> {
         Scalar {
-            inner: self.inner.inv()
+            inner: self.inner.inv(),
         }
     }
 }
