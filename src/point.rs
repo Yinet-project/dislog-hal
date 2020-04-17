@@ -1,4 +1,4 @@
-use core::ops::{Add, Mul, Neg, Sub, AddAssign};
+use core::ops::{Add, AddAssign, Mul, Neg, Sub};
 
 use crate::Bytes;
 use crate::Scalar;
@@ -29,29 +29,23 @@ pub struct Point<P: DisLogPoint> {
 
 impl<P: DisLogPoint> Point<P> {
     pub fn order() -> Scalar<P::Scalar> {
-        Scalar {
-            inner: P::order()
-        }
+        Scalar { inner: P::order() }
     }
-    
+
     pub fn zero() -> Point<P> {
-        Point {
-            inner: P::zero()
-        }
+        Point { inner: P::zero() }
     }
 
     pub fn one() -> Point<P> {
-        Point {
-            inner: P::one()
-        }
+        Point { inner: P::one() }
     }
 
     pub fn generator() -> Point<P> {
         Point {
-            inner: P::generator()
+            inner: P::generator(),
         }
     }
-} 
+}
 
 impl<P: DisLogPoint> Clone for Point<P> {
     fn clone(&self) -> Point<P> {
@@ -82,9 +76,7 @@ impl<P: DisLogPoint> PartialEq for Point<P> {
 
 impl<P: DisLogPoint> Eq for Point<P> {}
 
-impl<'a, 'b, P: DisLogPoint> Add<&'b Point<P>>
-    for &'a Point<P>
-{
+impl<'a, 'b, P: DisLogPoint> Add<&'b Point<P>> for &'a Point<P> {
     type Output = Point<P>;
 
     fn add(self, rhs: &'b Point<P>) -> Point<P> {
@@ -93,20 +85,17 @@ impl<'a, 'b, P: DisLogPoint> Add<&'b Point<P>>
     }
 }
 
-impl<'a, P: DisLogPoint> Neg for &'a Point<P>
-{
+impl<'a, P: DisLogPoint> Neg for &'a Point<P> {
     type Output = Point<P>;
 
     fn neg(self) -> Point<P> {
         Point {
-            inner: self.inner.neg()
+            inner: self.inner.neg(),
         }
     }
 }
 
-
-impl<P: DisLogPoint> Neg for Point<P>
-{
+impl<P: DisLogPoint> Neg for Point<P> {
     type Output = Point<P>;
 
     fn neg(self) -> Point<P> {
@@ -114,9 +103,7 @@ impl<P: DisLogPoint> Neg for Point<P>
     }
 }
 
-impl<'b, P: DisLogPoint> Add<&'b Point<P>>
-    for Point<P>
-{
+impl<'b, P: DisLogPoint> Add<&'b Point<P>> for Point<P> {
     type Output = Point<P>;
 
     fn add(self, rhs: &'b Point<P>) -> Point<P> {
@@ -124,9 +111,7 @@ impl<'b, P: DisLogPoint> Add<&'b Point<P>>
     }
 }
 
-impl<'a, P: DisLogPoint> Add<Point<P>>
-    for &'a Point<P>
-{
+impl<'a, P: DisLogPoint> Add<Point<P>> for &'a Point<P> {
     type Output = Point<P>;
 
     fn add(self, rhs: Point<P>) -> Point<P> {
@@ -134,9 +119,7 @@ impl<'a, P: DisLogPoint> Add<Point<P>>
     }
 }
 
-impl<P: DisLogPoint> Add<Point<P>>
-    for Point<P>
-{
+impl<P: DisLogPoint> Add<Point<P>> for Point<P> {
     type Output = Point<P>;
 
     fn add(self, rhs: Point<P>) -> Point<P> {
@@ -155,9 +138,7 @@ impl<'a, 'b, P: DisLogPoint<Scalar = S>, S: ScalarNumber<Point = P>> Mul<&'b Sca
     }
 }
 
-impl<'b, P: DisLogPoint<Scalar = S>, S: ScalarNumber<Point = P>> Mul<&'b Scalar<S>>
-    for Point<P>
-{
+impl<'b, P: DisLogPoint<Scalar = S>, S: ScalarNumber<Point = P>> Mul<&'b Scalar<S>> for Point<P> {
     type Output = Point<P>;
 
     fn mul(self, rhs: &'b Scalar<S>) -> Point<P> {
@@ -165,9 +146,7 @@ impl<'b, P: DisLogPoint<Scalar = S>, S: ScalarNumber<Point = P>> Mul<&'b Scalar<
     }
 }
 
-impl<P: DisLogPoint<Scalar = S>, S: ScalarNumber<Point = P>> Mul<Scalar<S>>
-    for Point<P>
-{
+impl<P: DisLogPoint<Scalar = S>, S: ScalarNumber<Point = P>> Mul<Scalar<S>> for Point<P> {
     type Output = Point<P>;
 
     fn mul(self, rhs: Scalar<S>) -> Point<P> {
