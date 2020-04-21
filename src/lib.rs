@@ -12,3 +12,6 @@ pub use point::Point;
 
 mod bytes;
 pub use bytes::Bytes;
+
+mod hasher;
+pub use hasher::Hasher;
