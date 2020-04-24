@@ -6,6 +6,7 @@ use crate::ScalarNumber;
 
 pub trait DisLogPoint: Bytes + Clone + PartialEq {
     type Scalar: ScalarNumber;
+    type XType;
 
     fn order() -> Self::Scalar;
 
@@ -20,6 +21,8 @@ pub trait DisLogPoint: Bytes + Clone + PartialEq {
     fn mul(&self, o: &Self::Scalar) -> Self;
 
     fn neg(&self) -> Self;
+
+    fn get_x() -> Self::XType;
 }
 
 // #[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
