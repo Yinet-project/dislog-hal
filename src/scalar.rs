@@ -8,6 +8,8 @@ use crate::Point;
 pub trait ScalarNumber: Bytes + Clone + PartialEq {
     type Point: DisLogPoint;
 
+    fn random() -> Self;
+
     fn order() -> Self;
 
     fn zero() -> Self;
@@ -29,6 +31,10 @@ pub struct Scalar<S: ScalarNumber> {
 }
 
 impl<S: ScalarNumber> Scalar<S> {
+    pub fn random() -> Scalar<S> {
+        Scalar { inner: S::random() }
+    }
+
     pub fn order() -> Scalar<S> {
         Scalar { inner: S::order() }
     }
@@ -45,6 +51,17 @@ impl<S: ScalarNumber> Scalar<S> {
         Scalar {
             inner: self.inner.inv(),
         }
+    }
+
+    pub fn from_bytes(bytes: S::BytesType) -> Result<Self, S::Error> {
+        match S::from_bytes(bytes) {
+            Ok(x) => Ok(Self { inner: x }),
+            Err(x) => Err(x),
+        }
+    }
+
+    pub fn to_bytes(&self) -> S::BytesType {
+        self.inner.to_bytes()
     }
 }
 

@@ -6,7 +6,6 @@ use crate::ScalarNumber;
 
 pub trait DisLogPoint: Bytes + Clone + PartialEq {
     type Scalar: ScalarNumber;
-    type XType;
 
     fn order() -> Self::Scalar;
 
@@ -22,7 +21,9 @@ pub trait DisLogPoint: Bytes + Clone + PartialEq {
 
     fn neg(&self) -> Self;
 
-    fn get_x() -> Self::XType;
+    fn get_x(&self) -> Scalar<Self::Scalar>;
+
+    fn get_y(&self) -> Scalar<Self::Scalar>;
 }
 
 // #[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
@@ -47,6 +48,25 @@ impl<P: DisLogPoint> Point<P> {
         Point {
             inner: P::generator(),
         }
+    }
+
+    pub fn get_x(&self) -> Scalar<P::Scalar> {
+        self.inner.get_x()
+    }
+
+    pub fn get_y(&self) -> Scalar<P::Scalar> {
+        self.inner.get_y()
+    }
+
+    pub fn from_bytes(bytes: P::BytesType) -> Result<Self, P::Error> {
+        match P::from_bytes(bytes) {
+            Ok(x) => Ok(Self { inner: x }),
+            Err(x) => Err(x),
+        }
+    }
+
+    pub fn to_bytes(&self) -> P::BytesType {
+        self.inner.to_bytes()
     }
 }
 
