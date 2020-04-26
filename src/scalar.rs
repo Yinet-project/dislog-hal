@@ -1,14 +1,14 @@
-use core::ops::{Add, AddAssign, Mul, MulAssign, Neg, Sub};
-
 use crate::Bytes;
 use crate::DisLogPoint;
 use crate::Point;
+use core::ops::{Add, AddAssign, Mul, MulAssign, Neg, Sub};
+use rand::RngCore;
 
 /// This trait restrict scalar number's behavier.
 pub trait ScalarNumber: Bytes + Clone + PartialEq {
     type Point: DisLogPoint;
 
-    fn random() -> Self;
+    fn random<R: RngCore>(rng: &mut R) -> Self;
 
     fn order() -> Self;
 
@@ -31,8 +31,10 @@ pub struct Scalar<S: ScalarNumber> {
 }
 
 impl<S: ScalarNumber> Scalar<S> {
-    pub fn random() -> Scalar<S> {
-        Scalar { inner: S::random() }
+    pub fn random<R: RngCore>(rng: &mut R) -> Scalar<S> {
+        Scalar {
+            inner: S::random::<R>(rng),
+        }
     }
 
     pub fn order() -> Scalar<S> {
