@@ -4,7 +4,7 @@ use hex::{FromHex, ToHex};
 pub trait Bytes: Sized {
     type BytesType: Debug + FromHex + ToHex;
 
-    type Error;
+    type Error: Debug;
 
     fn from_bytes(bytes: Self::BytesType) -> Result<Self, Self::Error>;
 
