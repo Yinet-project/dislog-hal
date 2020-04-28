@@ -108,6 +108,10 @@ impl<'a, 'b, P: DisLogPoint> Add<&'b Point<P>> for &'a Point<P> {
     }
 }
 
+define_l_val_r_ref!(Point, DisLogPoint, Add, add, Point<T>);
+define_l_val_r_val!(Point, DisLogPoint, Add, add, Point<T>);
+define_l_ref_r_val!(Point, DisLogPoint, Add, add, Point<T>);
+
 impl<'a, P: DisLogPoint> Neg for &'a Point<P> {
     type Output = Point<P>;
 
@@ -123,30 +127,6 @@ impl<P: DisLogPoint> Neg for Point<P> {
 
     fn neg(self) -> Point<P> {
         -&self
-    }
-}
-
-impl<'b, P: DisLogPoint> Add<&'b Point<P>> for Point<P> {
-    type Output = Point<P>;
-
-    fn add(self, rhs: &'b Point<P>) -> Point<P> {
-        &self + rhs
-    }
-}
-
-impl<'a, P: DisLogPoint> Add<Point<P>> for &'a Point<P> {
-    type Output = Point<P>;
-
-    fn add(self, rhs: Point<P>) -> Point<P> {
-        self + &rhs
-    }
-}
-
-impl<P: DisLogPoint> Add<Point<P>> for Point<P> {
-    type Output = Point<P>;
-
-    fn add(self, rhs: Point<P>) -> Point<P> {
-        &self + &rhs
     }
 }
 
@@ -185,6 +165,10 @@ impl<'a, 'b, S: DisLogPoint> Sub<&'b Point<S>> for &'a Point<S> {
         Point { inner }
     }
 }
+
+define_l_val_r_ref!(Point, DisLogPoint, Sub, sub, Point<T>);
+define_l_val_r_val!(Point, DisLogPoint, Sub, sub, Point<T>);
+define_l_ref_r_val!(Point, DisLogPoint, Sub, sub, Point<T>);
 
 impl<'b, S: DisLogPoint> AddAssign<&'b Point<S>> for Point<S> {
     fn add_assign(&mut self, rhs: &'b Self) {
