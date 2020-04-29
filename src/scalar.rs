@@ -123,29 +123,9 @@ impl<'a, 'b, S: ScalarNumber> Add<&'b Scalar<S>> for &'a Scalar<S> {
     }
 }
 
-impl<'a, S: ScalarNumber> Add<Scalar<S>> for &'a Scalar<S> {
-    type Output = Scalar<S>;
-
-    fn add(self, rhs: Scalar<S>) -> Scalar<S> {
-        self + &rhs
-    }
-}
-
-impl<'b, S: ScalarNumber> Add<&'b Scalar<S>> for Scalar<S> {
-    type Output = Scalar<S>;
-
-    fn add(self, rhs: &'b Scalar<S>) -> Scalar<S> {
-        &self + rhs
-    }
-}
-
-impl<S: ScalarNumber> Add<Scalar<S>> for Scalar<S> {
-    type Output = Scalar<S>;
-
-    fn add(self, rhs: Scalar<S>) -> Scalar<S> {
-        &self + &rhs
-    }
-}
+define_l_val_r_ref!(Scalar, ScalarNumber, Add, add, Scalar<T>);
+define_l_val_r_val!(Scalar, ScalarNumber, Add, add, Scalar<T>);
+define_l_ref_r_val!(Scalar, ScalarNumber, Add, add, Scalar<T>);
 
 impl<'a, 'b, S: ScalarNumber> Mul<&'b Scalar<S>> for &'a Scalar<S> {
     type Output = Scalar<S>;
@@ -156,29 +136,9 @@ impl<'a, 'b, S: ScalarNumber> Mul<&'b Scalar<S>> for &'a Scalar<S> {
     }
 }
 
-impl<'a, S: ScalarNumber> Mul<Scalar<S>> for &'a Scalar<S> {
-    type Output = Scalar<S>;
-
-    fn mul(self, rhs: Scalar<S>) -> Scalar<S> {
-        self * &rhs
-    }
-}
-
-impl<'b, S: ScalarNumber> Mul<&'b Scalar<S>> for Scalar<S> {
-    type Output = Scalar<S>;
-
-    fn mul(self, rhs: &'b Scalar<S>) -> Scalar<S> {
-        &self * rhs
-    }
-}
-
-impl<S: ScalarNumber> Mul<Scalar<S>> for Scalar<S> {
-    type Output = Scalar<S>;
-
-    fn mul(self, rhs: Scalar<S>) -> Scalar<S> {
-        &self * &rhs
-    }
-}
+define_l_val_r_ref!(Scalar, ScalarNumber, Mul, mul, Scalar<T>);
+define_l_val_r_val!(Scalar, ScalarNumber, Mul, mul, Scalar<T>);
+define_l_ref_r_val!(Scalar, ScalarNumber, Mul, mul, Scalar<T>);
 
 impl<'a, 'b, S: ScalarNumber<Point = P>, P: DisLogPoint<Scalar = S>> Mul<&'b Point<P>>
     for &'a Scalar<S>
@@ -223,6 +183,10 @@ impl<'a, 'b, S: ScalarNumber> Sub<&'b Scalar<S>> for &'a Scalar<S> {
         Scalar { inner }
     }
 }
+
+define_l_val_r_ref!(Scalar, ScalarNumber, Sub, sub, Scalar<T>);
+define_l_val_r_val!(Scalar, ScalarNumber, Sub, sub, Scalar<T>);
+define_l_ref_r_val!(Scalar, ScalarNumber, Sub, sub, Scalar<T>);
 
 impl<'b, S: ScalarNumber> AddAssign<&'b Scalar<S>> for Scalar<S> {
     fn add_assign(&mut self, rhs: &'b Self) {
