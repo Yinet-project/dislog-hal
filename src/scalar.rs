@@ -26,7 +26,7 @@ pub trait ScalarNumber: Bytes + Clone + PartialEq + Serialize + for<'de> Deseria
 }
 
 #[derive(Serialize, Deserialize)]
-pub struct Scalar<S: ScalarNumber>(#[serde(bound(deserialize = "S: ScalarNumber"))] pub(crate) S);
+pub struct Scalar<S: ScalarNumber>(#[serde(bound(deserialize = "S: ScalarNumber"))] pub S);
 
 impl<S: ScalarNumber> Scalar<S> {
     pub fn random<R: RngCore>(rng: &mut R) -> Scalar<S> {

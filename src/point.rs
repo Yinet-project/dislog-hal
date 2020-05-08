@@ -28,7 +28,7 @@ pub trait DisLogPoint: Bytes + Clone + PartialEq + Serialize + for<'de> Deserial
 }
 
 #[derive(Serialize, Deserialize)]
-pub struct Point<P: DisLogPoint>(#[serde(bound(deserialize = "P: DisLogPoint"))] pub(crate) P);
+pub struct Point<P: DisLogPoint>(#[serde(bound(deserialize = "P: DisLogPoint"))] pub P);
 
 impl<P: DisLogPoint> Point<P> {
     pub fn order() -> Scalar<P::Scalar> {
