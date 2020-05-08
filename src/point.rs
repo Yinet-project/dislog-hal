@@ -28,74 +28,67 @@ pub trait DisLogPoint: Bytes + Clone + PartialEq + Serialize + for<'de> Deserial
 }
 
 #[derive(Serialize, Deserialize)]
-pub struct Point<P: DisLogPoint> {
-    #[serde(bound(deserialize = "P: DisLogPoint"))]
-    pub inner: P,
-}
+pub struct Point<P: DisLogPoint>(#[serde(bound(deserialize = "P: DisLogPoint"))] pub(crate) P);
 
 impl<P: DisLogPoint> Point<P> {
     pub fn order() -> Scalar<P::Scalar> {
-        Scalar { inner: P::order() }
+        Scalar(P::order())
     }
 
     pub fn zero() -> Point<P> {
-        Point { inner: P::zero() }
+        Point(P::zero())
     }
 
     pub fn one() -> Point<P> {
-        Point { inner: P::one() }
+        Point(P::one())
     }
 
     pub fn generator() -> Point<P> {
-        Point {
-            inner: P::generator(),
-        }
+        Point(P::generator())
     }
 
     pub fn get_x(&self) -> Scalar<P::Scalar> {
-        self.inner.get_x()
+        self.0.get_x()
     }
 
     pub fn get_y(&self) -> Scalar<P::Scalar> {
-        self.inner.get_y()
+        self.0.get_y()
     }
 
     pub fn from_bytes(bytes: P::BytesType) -> Result<Self, P::Error> {
         match P::from_bytes(bytes) {
-            Ok(x) => Ok(Self { inner: x }),
+            Ok(x) => Ok(Self(x)),
             Err(x) => Err(x),
         }
     }
 
     pub fn to_bytes(&self) -> P::BytesType {
-        self.inner.to_bytes()
+        self.0.to_bytes()
     }
 }
 
 impl<P: DisLogPoint> Clone for Point<P> {
     fn clone(&self) -> Point<P> {
-        Point {
-            inner: self.inner.clone(),
-        }
+        Point(self.0.clone())
     }
 }
 
 impl<P: DisLogPoint> core::fmt::Debug for Point<P> {
     fn fmt(&self, f: &mut ::core::fmt::Formatter) -> ::core::fmt::Result {
-        write!(f, "Point{{\n\tbytes: {:?},\n}}", &self.inner.to_bytes())
+        write!(f, "Point{{\n\tbytes: {:?},\n}}", &self.0.to_bytes())
     }
 }
 
 impl<P: DisLogPoint> Default for Point<P> {
     fn default() -> Point<P> {
         let inner = P::generator();
-        Point { inner }
+        Point(inner)
     }
 }
 
 impl<P: DisLogPoint> PartialEq for Point<P> {
     fn eq(&self, other: &Point<P>) -> bool {
-        self.inner.eq(&other.inner)
+        self.0.eq(&other.0)
     }
 }
 
@@ -105,8 +98,8 @@ impl<'a, 'b, P: DisLogPoint> Add<&'b Point<P>> for &'a Point<P> {
     type Output = Point<P>;
 
     fn add(self, rhs: &'b Point<P>) -> Point<P> {
-        let inner = self.inner.add(&rhs.inner);
-        Point { inner }
+        let inner = self.0.add(&rhs.0);
+        Point(inner)
     }
 }
 
@@ -118,9 +111,7 @@ impl<'a, P: DisLogPoint> Neg for &'a Point<P> {
     type Output = Point<P>;
 
     fn neg(self) -> Point<P> {
-        Point {
-            inner: self.inner.neg(),
-        }
+        Point(self.0.neg())
     }
 }
 
@@ -138,8 +129,8 @@ impl<'a, 'b, P: DisLogPoint<Scalar = S>, S: ScalarNumber<Point = P>> Mul<&'b Sca
     type Output = Point<P>;
 
     fn mul(self, rhs: &'b Scalar<S>) -> Point<P> {
-        let inner = self.inner.mul(&rhs.inner);
-        Point { inner }
+        let inner = self.0.mul(&rhs.0);
+        Point(inner)
     }
 }
 
@@ -163,8 +154,8 @@ impl<'a, 'b, S: DisLogPoint> Sub<&'b Point<S>> for &'a Point<S> {
     type Output = Point<S>;
 
     fn sub(self, rhs: &'b Point<S>) -> Point<S> {
-        let inner = self.inner.add(&rhs.inner.neg());
-        Point { inner }
+        let inner = self.0.add(&rhs.0.neg());
+        Point(inner)
     }
 }
 
@@ -174,6 +165,6 @@ define_l_ref_r_val!(Point, DisLogPoint, Sub, sub, Point<T>);
 
 impl<'b, S: DisLogPoint> AddAssign<&'b Point<S>> for Point<S> {
     fn add_assign(&mut self, rhs: &'b Self) {
-        self.inner = self.inner.add(&rhs.inner)
+        self.0 = self.0.add(&rhs.0)
     }
 }
