@@ -3,9 +3,9 @@ use crate::DisLogPoint;
 use crate::Point;
 use core::ops::{Add, AddAssign, Mul, MulAssign, Neg, Sub};
 use rand::RngCore;
+use serde::{Deserialize, Serialize};
 
-/// This trait restrict scalar number's behavier.
-pub trait ScalarNumber: Bytes + Clone + PartialEq {
+pub trait ScalarNumber: Bytes + Clone + PartialEq + Serialize + for<'de> Deserialize<'de> {
     type Point: DisLogPoint;
 
     fn random<R: RngCore>(rng: &mut R) -> Self;
@@ -25,8 +25,9 @@ pub trait ScalarNumber: Bytes + Clone + PartialEq {
     fn neg(&self) -> Self;
 }
 
-// #[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+#[derive(Serialize, Deserialize)]
 pub struct Scalar<S: ScalarNumber> {
+    #[serde(bound(deserialize = "S: ScalarNumber"))]
     pub inner: S,
 }
 

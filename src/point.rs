@@ -3,8 +3,9 @@ use core::ops::{Add, AddAssign, Mul, Neg, Sub};
 use crate::Bytes;
 use crate::Scalar;
 use crate::ScalarNumber;
+use serde::{Deserialize, Serialize};
 
-pub trait DisLogPoint: Bytes + Clone + PartialEq {
+pub trait DisLogPoint: Bytes + Clone + PartialEq + Serialize + for<'de> Deserialize<'de> {
     type Scalar: ScalarNumber;
 
     fn order() -> Self::Scalar;
@@ -26,8 +27,9 @@ pub trait DisLogPoint: Bytes + Clone + PartialEq {
     fn get_y(&self) -> Scalar<Self::Scalar>;
 }
 
-// #[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+#[derive(Serialize, Deserialize)]
 pub struct Point<P: DisLogPoint> {
+    #[serde(bound(deserialize = "P: DisLogPoint"))]
     pub inner: P,
 }
 
