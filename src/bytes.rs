@@ -2,7 +2,7 @@ use core::fmt::Debug;
 use hex::{FromHex, ToHex};
 
 pub trait Bytes: Sized {
-    type BytesType: Debug + FromHex + ToHex;
+    type BytesType: Debug + FromHex + ToHex + AsRef<[u8]>;
 
     type Error: Debug;
 
