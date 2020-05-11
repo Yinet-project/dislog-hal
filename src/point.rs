@@ -55,7 +55,7 @@ impl<P: DisLogPoint> Point<P> {
         self.0.get_y()
     }
 
-    pub fn from_bytes(bytes: P::BytesType) -> Result<Self, P::Error> {
+    pub fn from_bytes(bytes: &[u8]) -> Result<Self, P::Error> {
         match P::from_bytes(bytes) {
             Ok(x) => Ok(Self(x)),
             Err(x) => Err(x),

@@ -49,7 +49,7 @@ impl<S: ScalarNumber> Scalar<S> {
         Scalar(self.0.inv())
     }
 
-    pub fn from_bytes(bytes: S::BytesType) -> Result<Self, S::Error> {
+    pub fn from_bytes(bytes: &[u8]) -> Result<Self, S::Error> {
         match S::from_bytes(bytes) {
             Ok(x) => Ok(Self(x)),
             Err(x) => Err(x),

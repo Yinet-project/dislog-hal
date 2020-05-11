@@ -6,7 +6,7 @@ pub trait Bytes: Sized {
 
     type Error: Debug;
 
-    fn from_bytes(bytes: Self::BytesType) -> Result<Self, Self::Error>;
+    fn from_bytes(bytes: &[u8]) -> Result<Self, Self::Error>;
 
     fn to_bytes(&self) -> Self::BytesType;
 }
