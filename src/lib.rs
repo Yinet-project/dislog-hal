@@ -1,5 +1,4 @@
 #![no_std]
-#![feature(trace_macros)]
 
 #[macro_use]
 pub(crate) mod macros;
